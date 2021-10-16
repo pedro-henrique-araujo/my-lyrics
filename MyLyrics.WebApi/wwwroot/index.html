@@ -1,0 +1,56 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>MyLyrics</title>
+    
+    <style>
+        ul li {
+            margin-bottom: 15px;
+        }
+    </style>
+</head>
+<body>
+    <form>
+        <label>Search</label>
+        <input type="search" />
+        <input type="submit" />
+    </form>
+
+    <ul id="options">
+
+    </ul>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        function renderOptions(options) {
+            optionsList.innerHTML = "";
+            for (let { id, title, band } of options) {
+                let li = document.createElement("li");
+                li.innerText = `${title} - ${band}`;
+                li.addEventListener("click", async () => await generateFile(id));
+
+                optionsList.append(li);
+            }
+        }
+
+
+        async function generateFile(id) {
+            let result = await axios.get("generate?songId=" + id);
+            let { documentName } = result.data;
+            let linkToFile = document.createElement('a');
+            linkToFile.href = '/pdf/' + documentName;
+            linkToFile.target = '_blank';
+            linkToFile.click();
+        }
+
+        let form = document.querySelector("form");
+        let searchInput = document.querySelector("input[type=search]");
+        let optionsList = document.querySelector("#options");
+        form.addEventListener("submit", async event => {
+            event.preventDefault();
+            let result = await axios.get("search?searchTerm=" + searchInput.value);
+            renderOptions(result.data);
+        });
+    </script>
+</body>
+</html>
