@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.HttpOverrides;
 
 namespace MyLyrics.WebApi
 {
@@ -35,6 +36,11 @@ namespace MyLyrics.WebApi
             {
                 app.UseDeveloperExceptionPage();
             }
+
+            app.UseForwardedHeaders(new ForwardedHeadersOptions
+            {
+                ForwardedHeaders = ForwardedHeaders.All
+            });
 
             app.UseHttpsRedirection();
 

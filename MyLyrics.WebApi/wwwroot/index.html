@@ -3,18 +3,27 @@
 <head>
     <meta charset="utf-8" />
     <title>MyLyrics</title>
-    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        ul {
+            margin: 0;
+            margin-top: 30px;
+            padding: 0;
+        }
+
         ul li {
+            list-style: none;
             margin-bottom: 15px;
+            cursor: pointer;
+            color: blue;
+            text-decoration: underline;
         }
     </style>
 </head>
 <body>
     <form>
-        <label>Search</label>
-        <input type="search" />
-        <input type="submit" />
+        <input type="search" placeholder="Digite sua pesquisa aqui..." />
+        <input type="submit" value="Pesquisar"/>
     </form>
 
     <ul id="options">
@@ -38,7 +47,7 @@
             let result = await axios.get("generate?songId=" + id);
             let { documentName } = result.data;
             let linkToFile = document.createElement('a');
-            linkToFile.href = '/pdf/' + documentName;
+            linkToFile.href = 'pdf/' + documentName;
             linkToFile.target = '_blank';
             linkToFile.click();
         }

@@ -8,5 +8,9 @@
     <ProjectReference Include="..\Logic\MyLyrics.Logic.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\pdf\" />
+  </ItemGroup>
+
 
 </Project>
