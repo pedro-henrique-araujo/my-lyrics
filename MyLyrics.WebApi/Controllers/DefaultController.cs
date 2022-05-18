@@ -9,11 +9,11 @@ namespace MyLyrics.WebApi.Controllers
     [Route("/")]
     public class DefaultController : ControllerBase
     {
-        private MyLyricsLogic _logic;
+        private ILyricsService _logic;
 
-        public DefaultController()
+        public DefaultController(ILyricsService logic)
         {
-            _logic = new MyLyricsLogic("wwwroot/pdf/");
+            _logic = logic;
         }
 
         [Route("/search")]
@@ -27,14 +27,8 @@ namespace MyLyrics.WebApi.Controllers
         [Route("/generate")]
         public async Task<ActionResult> Generate(string songId)
         {
-            Song song = await _logic.GetLyricsAsync(songId);
-            string documentName = _logic.GenerateDocument(song);
-            return Ok(new 
-            { 
-                message = "Document generated successfully", 
-                documentName = documentName 
-            });
+            var document = await _logic.GeneratePdfDocument(songId);
+            return File(document, "application/pdf");
         }
-
     }
 }

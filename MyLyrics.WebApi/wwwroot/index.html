@@ -5,6 +5,12 @@
     <title>MyLyrics</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+
+        * {
+            font-family: 'Roboto', sans-serif;
+        }
+
         ul {
             margin: 0;
             margin-top: 30px;
@@ -13,10 +19,27 @@
 
         ul li {
             list-style: none;
-            margin-bottom: 15px;
+            margin-bottom: 20px;
             cursor: pointer;
             color: blue;
-            text-decoration: underline;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        input[type=search] {
+            width: 100%;
+            max-width: 500px;
+            height: 40px;
+            margin-bottom: 5px;
+            padding: 10px;
+            border-radius: 0;
+            border: 1px #ccc solid;
+        }
+
+        input[type=submit] {
+            border-radius: 0;
+            padding: 10px;
+            border: 1px #ccc solid;
         }
     </style>
 </head>
@@ -44,10 +67,8 @@
 
 
         async function generateFile(id) {
-            let result = await axios.get("generate?songId=" + id);
-            let { documentName } = result.data;
             let linkToFile = document.createElement('a');
-            linkToFile.href = 'pdf/' + documentName;
+            linkToFile.href = "/generate?songId=" + id;
             linkToFile.target = '_blank';
             linkToFile.click();
         }

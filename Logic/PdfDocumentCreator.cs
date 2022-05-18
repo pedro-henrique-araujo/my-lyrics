@@ -6,7 +6,7 @@ using System;
 
 namespace MyLyrics.Logic
 {
-    internal class PdfDocumentCreator
+    public class PdfDocumentCreator
     {
         private readonly Rectangle _pageSizeRectangle;
         private readonly int _numberOfColumns;
@@ -26,7 +26,7 @@ namespace MyLyrics.Logic
             _pathToSave = path + _documentName;
         }
 
-        internal string CreateDocumentForSong(Song song)
+        public string CreateDocumentForSong(Song song)
         {
             PdfPTable table = TableWithSongLyrics(song);
             while (GetNumberOfPages(table) > 1)
@@ -36,6 +36,25 @@ namespace MyLyrics.Logic
             }
             SaveDocument(table);
             return _documentName;
+        }
+
+        public byte[] GenerateByteArrayForSong(Song song)
+        {
+            PdfPTable table = TableWithSongLyrics(song);
+            while (GetNumberOfPages(table) > 1)
+            {
+                _fontSize--;
+                table = TableWithSongLyrics(song);
+            }
+            return GenerateByteArrayForContent(table);
+        }
+
+        private byte[] GenerateByteArrayForContent(IElement content)
+        {
+            using (MemoryStream stream = new MemoryStream())
+            {
+                return GenerateDocumentAndReturnBytes(content, stream);
+            }
         }
 
         private int GetNumberOfPages(IElement content)
